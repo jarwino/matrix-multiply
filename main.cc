@@ -41,14 +41,20 @@ int main(int argc, char const *argv[]) {
   t_gpu = clock() - t_gpu;
   t_gpu = (float)t_gpu / NUM_TRIALS;
 
-/*
+
   for (int i = 0; i < N; i++) {
     for (int j = 0; j < P; j++) {
-      printf("%f ", c[i][j]);
+      printf("%f ", c_cpu[i][j]);
     }
     printf("\n");
   }
-*/
+
+  for (int i = 0; i < N; i++) {
+    for (int j = 0; j < P; j++) {
+      printf("%f ", c_gpu[i][j]);
+    }
+    printf("\n");
+  }
 
   printf("TIME CPU: %lf\n", ((float)t_cpu)/CLOCKS_PER_SEC);
   printf("TIME GPU: %lf\n", ((float)t_gpu)/CLOCKS_PER_SEC);
