@@ -18,13 +18,13 @@ int main(int argc, char const *argv[]) {
   for (int i = 0; i < N; i++) {
     for (int j = 0; j < M; j++) {
       //a[i * M + j] = sin(i + j);
-      a[i * M + j] = 7.0;
+      a[i * M + j] = 1.0;
     }
   }
   for (int i = 0; i < M; i++) {
     for (int j = 0; j < P; j++) {
       // b[i * P + j] = cos(i + j);
-      b[i * P + j] = 9.0;
+      b[i * P + j] = 1.0;
     }
   }
 
@@ -49,6 +49,7 @@ int main(int argc, char const *argv[]) {
     for (int j = 0; j < P; j++) {
       if (fabs(c_cpu[i * P + j] - c_gpu[i * P + j]) > powf(10, -12)) {
         printf("Incorrect :(\n First failure:\n");
+        printf("Row: %d, Col:, %d\n", i, j);
         printf("CPU: %f\n", c_cpu[i * P + j]);
         printf("GPU: %f\n", c_gpu[i * P + j]);
         printf("Difference: %f\n", c_cpu[i * P + j] - c_gpu[i * P + j]);
