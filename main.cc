@@ -17,14 +17,12 @@ int main(int argc, char const *argv[]) {
   // Initialize matrices
   for (int i = 0; i < N; i++) {
     for (int j = 0; j < M; j++) {
-      //a[i * M + j] = sin(i + j);
-      a[i * M + j] = 1.0;
+      a[i * M + j] = rand() % 200 - 100;
     }
   }
   for (int i = 0; i < M; i++) {
     for (int j = 0; j < P; j++) {
-      // b[i * P + j] = cos(i + j);
-      b[i * P + j] = 1.0;
+      b[i * P + j] = rand() % 200 - 100;
     }
   }
 

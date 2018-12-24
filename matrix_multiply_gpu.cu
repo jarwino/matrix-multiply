@@ -27,7 +27,7 @@ void multiply_matrices_gpu(double a[N * M], double b[M * P], double c[N * P]) {
 
   int threadsPerBlock1D = 16;
 
-  dim3 numBlocks(N / threadsPerBlock1D, P / threadsPerBlock1D, 1);
+  dim3 numBlocks(P / threadsPerBlock1D, N / threadsPerBlock1D, 1);
   dim3 threadsPerBlock(threadsPerBlock1D, threadsPerBlock1D, 1);
 
   multiply_matrices<<<numBlocks, threadsPerBlock>>>(a_gpu, b_gpu, c_gpu);
