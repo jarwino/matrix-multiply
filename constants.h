@@ -1,4 +1,4 @@
-#define N 1024
-#define M 512
-#define P 256
-#define NUM_TRIALS 10
+#define N 300
+#define M 600
+#define P 1200
+#define NUM_TRIALS 5

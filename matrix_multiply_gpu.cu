@@ -5,11 +5,13 @@ __global__ void multiply_matrices(double* a_gpu, double* b_gpu, double* c_gpu) {
   int i = blockDim.y * blockIdx.y + threadIdx.y;
   int j = blockDim.x * blockIdx.x + threadIdx.x;
 
-  double sum = 0;
-  for (int k = 0; k < M; k++) {
-    sum += a_gpu[i * M + k] * b_gpu[k * P + j];
+  if (i < N && j < P) {
+      double sum = 0;
+      for (int k = 0; k < M; k++) {
+        sum += a_gpu[i * M + k] * b_gpu[k * P + j];
+      }
+      c_gpu[i * P + j] = sum;
   }
-  c_gpu[i * P + j] = sum;
 }
 
 void multiply_matrices_gpu(double a[N * M], double b[M * P], double c[N * P]) {
@@ -27,7 +29,7 @@ void multiply_matrices_gpu(double a[N * M], double b[M * P], double c[N * P]) {
 
   int threadsPerBlock1D = 16;
 
-  dim3 numBlocks(P / threadsPerBlock1D, N / threadsPerBlock1D, 1);
+  dim3 numBlocks((P + threadsPerBlock1D - 1) / threadsPerBlock1D, (N + threadsPerBlock1D - 1) / threadsPerBlock1D, 1);
   dim3 threadsPerBlock(threadsPerBlock1D, threadsPerBlock1D, 1);
 
   multiply_matrices<<<numBlocks, threadsPerBlock>>>(a_gpu, b_gpu, c_gpu);
