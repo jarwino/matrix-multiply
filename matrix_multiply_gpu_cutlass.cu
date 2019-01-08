@@ -1,10 +1,9 @@
-#include "matrix_multiply_gpu.h"
+#include "matrix_multiply_gpu_cutlass.h"
 
-__global__ void multiply_matrices(double* a_gpu, double* b_gpu, double* c_gpu) {
+__global__ void multiply_matrices_cutlass(double* a_gpu, double* b_gpu, double* c_gpu) {
 
   int i = blockDim.y * blockIdx.y + threadIdx.y;
   int j = blockDim.x * blockIdx.x + threadIdx.x;
-
   if (i < N && j < P) {
       double sum = 0;
       for (int k = 0; k < M; k++) {
@@ -14,15 +13,7 @@ __global__ void multiply_matrices(double* a_gpu, double* b_gpu, double* c_gpu) {
   }
 }
 
-__global__ void do_nothing() {}
-
-void empty_kernel() {
-  dim3 numBlocks(1, 1, 1);
-  dim3 threadsPerBlock(1, 1, 1);  
-  do_nothing<<<numBlocks, threadsPerBlock>>>();
-}
-
-void multiply_matrices_gpu(double a[N * M], double b[M * P], double c[N * P]) {
+void multiply_matrices_gpu_cutlass(double a[N * M], double b[M * P], double c[N * P]) {
 
   double* a_gpu;
   double* b_gpu;
@@ -40,7 +31,7 @@ void multiply_matrices_gpu(double a[N * M], double b[M * P], double c[N * P]) {
   dim3 numBlocks((P + threadsPerBlock1D - 1) / threadsPerBlock1D, (N + threadsPerBlock1D - 1) / threadsPerBlock1D, 1);
   dim3 threadsPerBlock(threadsPerBlock1D, threadsPerBlock1D, 1);
 
-  multiply_matrices<<<numBlocks, threadsPerBlock>>>(a_gpu, b_gpu, c_gpu);
+  multiply_matrices_cutlass<<<numBlocks, threadsPerBlock>>>(a_gpu, b_gpu, c_gpu);
 
   cudaMemcpy(c, c_gpu, N * P * sizeof(double), cudaMemcpyDeviceToHost);
 
